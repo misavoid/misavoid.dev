@@ -1,11 +1,76 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import FancyCard from '../components/FancyCard.jsx';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const projects = [
+	{
+		title: "PLOS – Personal Life OS",
+		github: "https://github.com/misavoid/PLOS",
+		description: "Your all-in-one, self-hosted personal dashboard: track habits, notes, to-dos, time, and more—privacy first.",
+		stack: "Python · SQLite · Next.js · Docker"
+	},
+	{
+		title: "Momentta",
+		github: "https://github.com/misavoid/momentta",
+		description: "Automated time tracking for your digital life. Capture, analyze, and visualize productivity effortlessly.",
+		stack: "Python · SQLite · Grafana · Self‑hosted"
+	},
+	{
+		title: "Spensa",
+		github: "https://github.com/misavoid/Spensa",
+		description: "A no-BS pantry manager built in SwiftUI + SwiftData. Scan barcodes, track quantities & expirations, and never toss a mystery can in the back of your kitchen again.",
+		stack: "SwiftUI · SwiftData · OpenFoodFacts · Barcode Scanner"
+	},
+	{
+		title: "Shipping Label Converter",
+		github: "https://github.com/misavoid/shipping-label-converter",
+		description: "Extracts addresses and barcodes from DHL shipping labels using OCR and barcode detection.",
+		stack: "C# · OCR · Tesseract"
+	},
+	{
+		title: "Velin",
+		github: "https://github.com/misavoid/Velin",
+		description: "Open-source cycling app built on OpenStreetMap—plan, track, and visualize your rides your way.",
+		stack: "Swift · MapKit · OpenStreetMap"
+	}
+];
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Home | misavoid.dev">
+	<!-- About/Hero Section -->
+	<section id="about" class="mb-14 w-full max-w-5xl mx-auto flex justify-center">
+		<FancyCard client:load variant="gradient" title="Hey, I'm Patti 🚀">
+			<p class="mb-2">Junior Software Engineer · DIY enthusiast · Data Scientist</p>
+			<p>
+				I like building things that are <span   class="font-bold drop-shadow-[0_1px_4px_rgba(0,0,0,0.35)]"
+														style="color: #FFD600;">
+  				not boring</span>.<br/>
+				<span class="text-fuchsia-100">Cyclist. Data nerd. Occasional hacker. </span>
+			</p>
+		</FancyCard>
+	</section>
+
+	<!-- Projects Section -->
+	<section id="projects" class="w-full max-w-5xl mb-16 mx-auto">
+		<h2 class="text-3xl font-bold mb-4 text-center">Current Projects</h2>
+		<p class="text-center italic text-gray-500 mb-8 max-w-2xl mx-auto">
+			I wish I had more time. Or that time didn’t exist. Or that I never needed sleep.
+		</p>
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+			{projects.map((proj, idx) => (
+				<FancyCard
+					client:load
+					title={proj.title}
+					github={proj.github}
+				className={idx === projects.length - 1 && projects.length % 2 === 1
+				? "md:col-span-2 md:mx-auto"
+				: ""}>
+			<p>{proj.description}</p>
+			<p class="text-sm opacity-80">{proj.stack}</p>
+			</FancyCard>
+			))}
+		</div>
+
+	</section>
+
 </Layout>

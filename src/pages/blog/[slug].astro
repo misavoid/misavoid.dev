@@ -1,0 +1,29 @@
+---
+export const prerender = false; // remove this if you prefer static build + manual redeploys
+
+import Layout from '../../layouts/Layout.astro';
+import { fetchPost, DIRECTUS_URL } from '../../lib/directus';
+import { marked } from 'marked';
+
+const { slug } = Astro.params;
+const post = await fetchPost(slug!);
+if (!post) return Astro.redirect('/blog');
+
+const html = marked.parse(post.content ?? '');
+Astro.response.headers.set('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
+---
+
+<Layout title={`${post.title} | misavoid.dev`}>
+    <main class="prose dark:prose-invert max-w-3xl mx-auto p-6">
+        <h1>{post.title}</h1>
+        {post.cover?.id && (
+                <img
+                        src={`${DIRECTUS_URL}/assets/${post.cover.id}?width=1200&fit=cover`}
+                        alt={post.title}
+                        class="rounded-2xl"
+                        loading="eager"
+                />
+        )}
+        <article set:html={html} />
+    </main>
+</Layout>

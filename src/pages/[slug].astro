@@ -1,8 +1,8 @@
 ---
 export const prerender = false; // remove this if you prefer static build + manual redeploys
 
-import Layout from '../../layouts/Layout.astro';
-import { fetchPost, DIRECTUS_URL } from '../../lib/directus';
+import Layout from '../layouts/Layout.astro';
+import { fetchPost, DIRECTUS_URL } from '../lib/directus';
 import { marked } from 'marked';
 
 const { slug } = Astro.params;

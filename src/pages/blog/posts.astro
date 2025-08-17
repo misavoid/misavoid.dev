@@ -21,7 +21,9 @@ Astro.response.headers.set('Cache-Control', 's-maxage=60, stale-while-revalidate
                 <ul class="grid grid-cols-1 md:grid-cols-2 gap-10">
                     {posts.map((p) => (
                             <li
-                                    class="rounded-2xl p-6 bg-gradient-to-br from-fuchsia-600/50 to-violet-600/50 text-black shadow-lg hover:shadow-xl transition transform hover:-translate-y-1"
+                                    class="rounded-2xl p-6 bg-gradient-to-br from-fuchsia-600/70 to-violet-600/70 text-white
+             shadow-lg hover:shadow-xl transition transform hover:-translate-y-1
+             border-4 border-black"
                             >
                                 <a
                                         href={`/blog/${p.slug}`}

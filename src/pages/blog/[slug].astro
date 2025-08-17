@@ -1,0 +1,36 @@
+---
+// src/pages/blog/[slug].astro
+export const prerender = false; // SSR so new posts appear instantly
+
+import Layout from '../../layouts/Layout.astro';
+import { fetchPost } from '../../lib/directus';
+
+const { slug } = Astro.params;
+const post = slug ? await fetchPost(slug) : null;
+
+if (!post) {
+    Astro.response.status = 404;
+}
+
+Astro.response.headers.set('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
+---
+
+<Layout title={post ? `${post.title} | misavoid.dev` : 'Not found'}>
+    <main class="max-w-3xl mx-auto p-6 space-y-6">
+        {post ? (
+                <>
+                    <h1 class="text-3xl font-bold">{post.title}</h1>
+                    <div class="text-sm opacity-70">
+                        {post.published_at ? new Date(post.published_at).toLocaleDateString() : ''}
+                        {post.tags && post.tags.length ? ` · ${post.tags.join(', ')}` : ''}
+                    </div>
+
+                    <article class="prose prose-invert max-w-none">
+                        {post.content}
+                    </article>
+                </>
+        ) : (
+                <p class="opacity-70">Post not found.</p>
+        )}
+    </main>
+</Layout>

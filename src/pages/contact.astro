@@ -1,0 +1,60 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const EMAIL = "contact@misavoid.dev"; // Destination address for mailto
+---
+
+<Layout title="Contact | misavoid.dev">
+	<section class="w-full max-w-2xl mx-auto px-4">
+		<h1 class="text-3xl font-bold mb-2 text-center">Get in touch</h1>
+		<p class="text-center opacity-70 mb-10">
+			Have a question, idea, or collaboration in mind? I’d love to hear from you.
+		</p>
+
+		<div class="bg-white/90 border border-gray-200 rounded-2xl shadow-lg p-6 sm:p-8">
+			<form id="contact-form" class="space-y-6" novalidate>
+				<div>
+					<label for="name" class="block text-sm font-medium mb-1">Name</label>
+					<input id="name" name="name" type="text" required
+					       class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500" />
+				</div>
+				<div>
+					<label for="message" class="block text-sm font-medium mb-1">Message</label>
+					<textarea id="message" name="message" rows="5" required
+					          class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500"></textarea>
+				</div>
+
+				<div class="flex items-center justify-between gap-4">
+					<button type="submit"
+					        class="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-white bg-gradient-to-r from-fuchsia-600 to-violet-600 hover:to-fuchsia-700 transition shadow">
+						Send Message
+					</button>
+					<a href="https://github.com/misavoid" target="_blank" rel="noopener noreferrer"
+					   class="text-sm opacity-80 hover:opacity-100 underline">
+						Prefer GitHub? Say hi there →
+					</a>
+				</div>
+			</form>
+			<p class="text-xs opacity-60 mt-4">This opens your email client to send a message to <a class="underline" href={`mailto:${EMAIL}`}>{EMAIL}</a>.</p>
+		</div>
+	</section>
+
+	<script>
+		// Simple client-side handler that opens a prefilled email
+		if (typeof window !== 'undefined') {
+			const form = document.getElementById('contact-form');
+			form?.addEventListener('submit', (e) => {
+				e.preventDefault();
+				const name = /** @type {HTMLInputElement|null} */(document.getElementById('name'))?.value?.trim() || '';
+				const message = /** @type {HTMLTextAreaElement|null} */(document.getElementById('message'))?.value?.trim() || '';
+
+				const subject = name ? `Contact from ${name}` : 'Contact via misavoid.dev';
+				const body = `${name ? `From: ${name}` : ''}${name ? '\n\n' : ''}${message}`;
+
+				const href = `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+				window.location.href = href;
+			});
+		}
+	</script>
+
+</Layout>

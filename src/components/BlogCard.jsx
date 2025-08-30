@@ -30,13 +30,18 @@ export default function BlogCard({
         <>
             {/* collapsed card */}
             <motion.div
-                layoutId={title} // important for smooth animation
-                className={`relative rounded-2xl border p-6 sm:p-8 transition-all duration-200
-          flex flex-col gap-3 w-full h-48 md:h-56 overflow-hidden
-          bg-white/90 border-gray-200 shadow-lg text-gray-900
-          hover:-translate-y-1 cursor-pointer ${className}`}
+                className={`relative rounded-2xl p-6 sm:p-8 transition-transform duration-200 transform-gpu
+          flex flex-col gap-3 w-full h-48 md:h-56 overflow-hidden text-gray-900
+          cursor-pointer ${className}`}
                 onClick={() => setIsOpen(true)}
             >
+                {/* Animated background panel (shared) */}
+                <motion.div
+                    layoutId={`${title}-panel`}
+                    className="absolute inset-0 rounded-2xl bg-white/90 border border-gray-200 shadow-lg"
+                    transition={{ type: 'tween', duration: 0.65, ease: [0.4, 0, 0.2, 1] }}
+                    aria-hidden
+                />
                 {dateStr && (
                     <div className="absolute top-4 right-4">
             <span className="text-xs px-2 py-1 rounded-full border bg-gray-100 border-gray-200">
@@ -45,17 +50,17 @@ export default function BlogCard({
                     </div>
                 )}
 
-                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">
+                <h2 className="relative z-10 text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">
                     {title}
                 </h2>
 
                 {summary && (
-                    <p className="text-lg opacity-90 line-clamp-3">{summary}</p>
+                    <p className="relative z-10 text-lg opacity-90 line-clamp-3">{summary}</p>
                 )}
             </motion.div>
 
             {/* expanded modal version */}
-            <AnimatePresence>
+            <AnimatePresence mode="wait">
                 {isOpen && (
                     <motion.div
                         className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-6"
@@ -63,12 +68,21 @@ export default function BlogCard({
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
+                        transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+                        style={{ willChange: 'opacity' }}
                     >
                         <motion.div
-                            layoutId={title}
-                            className="relative bg-white rounded-2xl shadow-xl p-8 max-w-3xl w-full max-h-[90vh] overflow-y-auto"
+                            className="relative rounded-2xl p-8 max-w-3xl w-full min-h-[65vh] max-h-[90vh] overflow-y-auto transform-gpu"
                             onClick={(e) => e.stopPropagation()}
+                            style={{ willChange: 'transform, height, width' }}
                         >
+                            {/* Animated background panel (shared) */}
+                            <motion.div
+                                layoutId={`${title}-panel`}
+                                className="absolute inset-0 rounded-2xl bg-white shadow-xl"
+                                transition={{ type: 'tween', duration: 0.65, ease: [0.4, 0, 0.2, 1] }}
+                                aria-hidden
+                            />
                             <button
                                 className="absolute top-4 right-4 rounded-full bg-gray-200 hover:bg-gray-300 p-2"
                                 onClick={() => setIsOpen(false)}
@@ -76,15 +90,24 @@ export default function BlogCard({
                                 ✕
                             </button>
 
-                            <h2 className="text-3xl font-extrabold mb-4">{title}</h2>
+                            <motion.div
+                                key="content"
+                                initial={{ opacity: 0, y: 8 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 8 }}
+                                transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+                                layout={false}
+                            >
+                                <h2 className="relative z-10 text-3xl font-extrabold mb-4">{title}</h2>
 
-                            {dateStr && (
-                                <div className="text-sm text-gray-500 mb-6">{dateStr}</div>
-                            )}
+                                {dateStr && (
+                                    <div className="relative z-10 text-sm text-gray-500 mb-6">{dateStr}</div>
+                                )}
 
-                            <div className="prose prose-lg max-w-none">
-                                {content && content.trim().length > 0 ? content : summary}
-                            </div>
+                                <div className="relative z-10 prose prose-lg max-w-none">
+                                    {content && content.trim().length > 0 ? content : summary}
+                                </div>
+                            </motion.div>
                         </motion.div>
                     </motion.div>
                 )}

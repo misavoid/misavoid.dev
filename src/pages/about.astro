@@ -1,0 +1,112 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="About | misavoid.dev">
+	<section id="about" class="w-full max-w-3xl mx-auto px-4 space-y-8">
+		<h1 class="text-3xl font-bold text-center">About Me</h1>
+		<p class="text-center opacity-70 max-w-2xl mx-auto">
+			I’m Patti — a junior software engineer, DIY tinkerer, and data nerd who
+			likes building things that are not boring.
+		</p>
+
+<!-- Intro Card -->
+		<div class="bg-white/90 border border-gray-200 rounded-2xl shadow-lg p-6 sm:p-8">
+			<h2 class="text-xl font-semibold mb-3">What I’m into</h2>
+			<p class="mb-3">
+				I enjoy shipping small, useful tools and polishing them just enough to feel great in daily use.
+				On this site you’ll find posts about the things I’m building, experimenting with, and learning along the way.
+			</p>
+			<p>
+				Outside of code: cycling, automation rabbit holes, and the occasional hardware hack.
+			</p>
+		</div>
+
+<!-- Focus Areas Card -->
+		<div class="bg-white/90 border border-gray-200 rounded-2xl shadow p-6 sm:p-8">
+			<h2 class="text-xl font-semibold mb-4">Focus areas</h2>
+			<ul class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+				<li class="flex flex-col gap-2">
+					<div class="flex items-start gap-3">
+						<span class="mt-1 text-violet-600">◆</span>
+						<div>
+							<p class="font-medium">Data Science & Analytics</p>
+							<p class="text-sm opacity-70">From ETL to viz: clean data, model thoughtfully, communicate clearly.</p>
+						</div>
+					</div>
+					<div class="flex flex-wrap gap-2 mt-1">
+						<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 border border-gray-200">Python</span>
+						<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 border border-gray-200">Pandas</span>
+						<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 border border-gray-200">NumPy</span>
+						<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 border border-gray-200">Matplotlib</span>
+						<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 border border-gray-200">scikit‑learn</span>
+						<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 border border-gray-200">SQL</span>
+						<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 border border-gray-200">Oracle</span>
+						<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 border border-gray-200">Postgres</span>
+						<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 border border-gray-200">SQLite</span>
+						<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 border border-gray-200">Power BI</span>
+						<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 border border-gray-200">Grafana</span>
+					</div>
+				</li>
+				<li class="flex flex-col gap-2">
+					<div class="flex items-start gap-3">
+						<span class="mt-1 text-violet-600">◆</span>
+						<div>
+							<p class="font-medium">DevOps & Cloud</p>
+							<p class="text-sm opacity-70">Ship reliably with containers, reverse proxies, and practical cloud infra.</p>
+						</div>
+					</div>
+					<div class="flex flex-wrap gap-2 mt-1">
+						<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 border border-gray-200">Docker</span>
+						<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 border border-gray-200">Docker Compose</span>
+						<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 border border-gray-200">Traefik</span>
+						<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 border border-gray-200">Orbstack</span>
+						<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 border border-gray-200">Hetzner Cloud</span>
+						<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 border border-gray-200">NGINX</span>
+						<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 border border-gray-200">SSL</span>
+						<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 border border-gray-200">Reverse proxy</span>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+<!-- Technical Skills Card -->
+		<div id="skills" class="bg-white/90 border border-gray-200 rounded-2xl shadow p-6 sm:p-8">
+			<h2 class="text-xl font-semibold mb-4">Other technical skills</h2>
+			<ul class="space-y-4">
+				<li>
+					<p class="font-medium">Full‑stack Development</p>
+					<p class="text-sm opacity-80">Next.js (App Router), React, Astro, TypeScript, Tailwind, Django</p>
+				</li>
+				<li>
+					<p class="font-medium">Backend & APIs</p>
+					<p class="text-sm opacity-80">Python (FastAPI, Flask, REST/GraphQL), Directus CMS</p>
+				</li>
+				<li>
+					<p class="font-medium">Systems & Tooling</p>
+					<p class="text-sm opacity-80">Linux (Arch, Debian, Kali), virtualization (UTM, QCOW2), shell customization (Fish, Zsh, Warp)</p>
+				</li>
+			</ul>
+		</div>
+
+<!-- Links Card -->
+		<div class="bg-white/90 border border-gray-200 rounded-2xl shadow p-6 sm:p-8">
+			<h2 class="text-xl font-semibold mb-4">Find me</h2>
+			<div class="flex flex-wrap gap-3">
+				<a href="https://github.com/misavoid" target="_blank" rel="noopener noreferrer"
+				   class="inline-flex items-center gap-2 rounded-xl px-4 py-2 bg-gray-900 text-white hover:bg-gray-800 transition shadow">
+					GitHub
+					<span aria-hidden="true">→</span>
+				</a>
+				<a href="/contact" class="inline-flex items-center gap-2 rounded-xl px-4 py-2 border border-gray-300 hover:bg-gray-50 transition">
+					Contact
+					<span aria-hidden="true">→</span>
+				</a>
+				<a href="/blog/posts" class="inline-flex items-center gap-2 rounded-xl px-4 py-2 border border-gray-300 hover:bg-gray-50 transition">
+					Read the Blog
+					<span aria-hidden="true">→</span>
+				</a>
+			</div>
+		</div>
+	</section>
+</Layout>

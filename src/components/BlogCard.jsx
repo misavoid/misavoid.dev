@@ -35,6 +35,12 @@ export default function BlogCard({
     }));
     const [direction, setDirection] = useState(0); // -1 left, 1 right
 
+    // Slight per-card tilt for the collapsed deck look
+    const baseTilt = useMemo(() => (Math.random() * 2 - 1) * 3, []); // -3..3 deg
+    const deckTiltA = baseTilt - 2; // back layer
+    const deckTiltB = baseTilt + 2; // middle layer
+    const [hovered, setHovered] = useState(false);
+
     const computedDate = current?.date;
     let dateStr = "";
     if (computedDate) {
@@ -89,31 +95,65 @@ export default function BlogCard({
             {/* collapsed card */}
             <motion.div
                 className={`relative rounded-2xl p-6 sm:p-8 transition-transform duration-200 transform-gpu
-          flex flex-col gap-3 w-full h-48 md:h-56 overflow-hidden text-gray-900
+          flex flex-col gap-3 w-full h-48 md:h-56 text-gray-900
           cursor-pointer ${className}`}
+                whileHover={{ y: -8, rotate: baseTilt * 0.8, scale: 1.015 }}
+                whileTap={{ scale: 0.995 }}
+                transition={{ type: 'spring', stiffness: 760, damping: 20, mass: 0.55 }}
+                onHoverStart={() => setHovered(true)}
+                onHoverEnd={() => setHovered(false)}
                 onClick={() => setIsOpen(true)}
             >
+                {/* Deck-style stacked cards background for grid view */}
+                <div className="pointer-events-none absolute inset-0 z-0">
+                    <motion.div
+                        className="absolute -inset-x-4 -top-4 -bottom-4 rounded-2xl bg-white/70 shadow-md"
+                        aria-hidden
+                        initial={false}
+                        animate={hovered ? 'hover' : 'rest'}
+                        variants={{
+                            rest: { rotate: deckTiltA, y: 0, transition: { type: 'spring', stiffness: 600, damping: 26 } },
+                            hover: { rotate: deckTiltA + (deckTiltA >= 0 ? -2.5 : 2.5), y: -1, transition: { type: 'spring', stiffness: 900, damping: 18, mass: 0.5 } },
+                        }}
+                    />
+                    <motion.div
+                        className="absolute -inset-x-3 -top-3 -bottom-3 rounded-2xl bg-white/80 shadow-lg"
+                        aria-hidden
+                        initial={false}
+                        animate={hovered ? 'hover' : 'rest'}
+                        variants={{
+                            rest: { rotate: deckTiltB, y: 0, transition: { type: 'spring', stiffness: 600, damping: 26 } },
+                            hover: { rotate: deckTiltB + (deckTiltB >= 0 ? 3.5 : -3.5), y: -2, transition: { type: 'spring', stiffness: 900, damping: 18, mass: 0.5 } },
+                        }}
+                    />
+                </div>
                 {/* Animated background panel (shared) */}
                 <motion.div
                     layoutId={`${title}-panel`}
-                    className="absolute inset-0 rounded-2xl bg-white/90 border border-gray-200 shadow-lg"
-                    transition={{ type: 'tween', duration: 0.65, ease: [0.4, 0, 0.2, 1] }}
+                    className="absolute inset-0 z-10 rounded-2xl bg-white/90 border border-gray-200"
+                    initial={false}
+                    animate={hovered ? 'hover' : 'rest'}
+                    variants={{
+                        rest: { boxShadow: '0 12px 20px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.05)' },
+                        hover: { boxShadow: '0 28px 48px rgba(0,0,0,0.16), 0 8px 16px rgba(0,0,0,0.1)' },
+                    }}
+                    transition={{ type: 'spring', stiffness: 700, damping: 24, mass: 0.6 }}
                     aria-hidden
                 />
                 {dateStr && (
-                    <div className="absolute top-4 right-4">
+                    <div className="absolute top-4 right-4 z-20">
             <span className="text-xs px-2 py-1 rounded-full border bg-gray-100 border-gray-200">
               {dateStr}
             </span>
                     </div>
                 )}
 
-                <h2 className="relative z-10 text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">
+                <h2 className="relative z-20 text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">
                     {title}
                 </h2>
 
                 {summary && (
-                    <p className="relative z-10 text-lg opacity-90 line-clamp-3">{summary}</p>
+                    <p className="relative z-20 text-lg opacity-90 line-clamp-3">{summary}</p>
                 )}
             </motion.div>
 

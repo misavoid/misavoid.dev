@@ -3,10 +3,30 @@
 export const prerender = false; // SSR so new posts appear instantly
 
 import Layout from '../../layouts/Layout.astro';
-import { fetchPost } from '../../lib/directus';
+import { fetchPost, fetchPosts } from '../../lib/directus';
 
 const { slug } = Astro.params;
-const post = slug ? await fetchPost(slug) : null;
+let post = slug ? await fetchPost(slug) : null;
+
+// Also fetch all posts to compute prev/next for navigation and as a fallback
+const posts = await fetchPosts();
+
+// Fallback: if direct fetch by slug failed, try local matching from the list
+if (!post && slug && posts && posts.length) {
+	post = posts.find((p) => p.slug === slug) ?? null;
+}
+
+let prev = null;
+let next = null;
+if (post && posts && posts.length) {
+	const idx = posts.findIndex((p) => p.slug === post.slug);
+	if (idx !== -1) {
+		// posts are sorted by -published_at (newest first)
+		// "prev" = older post (to the left); "next" = newer post (to the right)
+		prev = posts[idx + 1] ?? null;
+		next = posts[idx - 1] ?? null;
+	}
+}
 
 if (!post) {
     Astro.response.status = 404;
@@ -16,21 +36,42 @@ Astro.response.headers.set('Cache-Control', 's-maxage=60, stale-while-revalidate
 ---
 
 <Layout title={post ? `${post.title} | misavoid.dev` : 'Not found'}>
-    <main class="max-w-3xl mx-auto p-6 space-y-6 min-h-[65vh]">
-        {post ? (
-                <>
-                    <h1 class="text-3xl font-bold">{post.title}</h1>
-                    <div class="text-sm opacity-70">
-                        {post.published_at ? new Date(post.published_at).toLocaleDateString() : ''}
-                        {post.tags && post.tags.length ? ` · ${post.tags.join(', ')}` : ''}
-                    </div>
+    <main class="relative mx-auto max-w-4xl p-6 min-h-[65vh]">
+		{post ? (
+			<div class="relative mx-auto w-full">
+				{/* stacked card deck background */}
+				<div class="pointer-events-none absolute inset-0 -z-10">
+					<div class="absolute inset-x-4 top-4 bottom-4 rounded-2xl bg-white/70 shadow-lg rotate-[-2deg]" aria-hidden="true"></div>
+					<div class="absolute inset-x-2 top-2 bottom-2 rounded-2xl bg-white/80 shadow-xl rotate-[2deg]" aria-hidden="true"></div>
+				</div>
 
-                    <article class="prose prose-invert max-w-none">
-                        {post.content}
-                    </article>
-                </>
-        ) : (
-                <p class="opacity-70">Post not found.</p>
-        )}
-    </main>
+				{/* primary card */}
+				<article class="relative rounded-2xl bg-white border border-gray-200 shadow-2xl p-8 sm:p-10">
+					<h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3 text-gray-900">{post.title}</h1>
+					<div class="text-sm text-gray-500 mb-8">
+						{post.published_at ? new Date(post.published_at).toLocaleDateString() : ''}
+						{post.tags && post.tags.length ? ` · ${post.tags.join(', ')}` : ''}
+					</div>
+
+					<div class="prose max-w-none">
+						{post.content}
+					</div>
+				</article>
+
+				{/* swipe/nav buttons */}
+				{prev && (
+					<a href={`/blog/${prev.slug}`} class="group absolute -left-4 top-1/2 -translate-y-1/2 -translate-x-full sm:translate-x-0 flex items-center justify-center w-11 h-11 rounded-full bg-white border border-gray-200 shadow-md hover:shadow-lg text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-400" aria-label="Previous post">
+						<span aria-hidden>←</span>
+					</a>
+				)}
+				{next && (
+					<a href={`/blog/${next.slug}`} class="group absolute -right-4 top-1/2 -translate-y-1/2 translate-x-full sm:translate-x-0 flex items-center justify-center w-11 h-11 rounded-full bg-white border border-gray-200 shadow-md hover:shadow-lg text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-400" aria-label="Next post">
+						<span aria-hidden>→</span>
+					</a>
+				)}
+			</div>
+		) : (
+			<p class="opacity-70">Post not found.</p>
+		)}
+	</main>
 </Layout>

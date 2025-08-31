@@ -24,17 +24,25 @@ Astro.response.headers.set("Cache-Control", "s-maxage=60, stale-while-revalidate
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                 {posts.map((p, idx) => (
                         <BlogCard
-                                client:load
-                    title={p.title}
-                    date={p.published_at ?? null}
-
-                    summary={p.summary ?? undefined}
-
-                    content={p.content ?? undefined}
-                    className={idx === posts.length - 1 && posts.length % 2 === 1
-                ? "md:col-span-2 md:mx-auto"
-                : ""}
-                    />
+                            client:load
+                            title={p.title}
+                            date={p.published_at ?? null}
+                            summary={p.summary ?? undefined}
+                            content={p.content ?? undefined}
+                            slug={p.slug}
+                            prevSlug={posts[idx + 1]?.slug}
+                            nextSlug={posts[idx - 1]?.slug}
+                            postsData={posts.map(x => ({
+                                slug: x.slug,
+                                title: x.title,
+                                summary: x.summary ?? undefined,
+                                content: x.content ?? undefined,
+                                published_at: x.published_at ?? null,
+                            }))}
+                            className={idx === posts.length - 1 && posts.length % 2 === 1
+                                ? "md:col-span-2 md:mx-auto"
+                                : ""}
+                        />
                     ))}
                 </div>
         )}

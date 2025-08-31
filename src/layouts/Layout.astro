@@ -11,18 +11,74 @@ import '../styles/global.css';
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 <body class="bg-gradient-to-br from-gray-100 to-gray-200 min-h-screen text-gray-900 flex flex-col">
-<nav class="w-full flex justify-center py-6 bg-transparent">
-	<ul class="flex gap-8 font-semibold text-lg">
-		<li><a href="/" class="hover:underline">Home</a></li>
-		<li><a href="#projects" class="hover:underline">Projects</a></li>
-		<li><a href="/about" class="hover:underline">About</a></li>
-		<li><a href="/contact" class="hover:underline">Contact</a></li>
-        <li><a href="/blog/posts" class="hover:underline">Blog</a> </li>
-	</ul>
+<nav class="w-full bg-transparent" style="padding-top: calc(env(safe-area-inset-top, 0px) + 0.75rem);">
+	<div class="max-w-7xl mx-auto px-4 w-full flex items-center justify-center relative">
+		<!-- Mobile burger -->
+		<button id="burger" class="sm:hidden absolute left-4 top-1/2 -translate-y-1/2 rounded-lg border border-gray-300 bg-white/80 backdrop-blur px-3 py-2 text-gray-800 shadow hover:bg-white" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false">
+			<span class="block w-5 h-0.5 bg-gray-800 mb-1"></span>
+			<span class="block w-5 h-0.5 bg-gray-800 mb-1"></span>
+			<span class="block w-5 h-0.5 bg-gray-800"></span>
+		</button>
+
+		<!-- Desktop menu -->
+		<ul class="hidden sm:flex gap-8 font-semibold text-lg">
+			<li><a href="/" class="hover:underline">Home</a></li>
+			<li><a href="#projects" class="hover:underline">Projects</a></li>
+			<li><a href="/about" class="hover:underline">About</a></li>
+			<li><a href="/contact" class="hover:underline">Contact</a></li>
+			<li><a href="/blog/posts" class="hover:underline">Blog</a></li>
+		</ul>
+	</div>
 </nav>
+
+<!-- Mobile sidebar menu -->
+<div id="mobile-menu" class="fixed inset-0 z-50 hidden" aria-hidden="true">
+	<div id="mobile-overlay" class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+	<aside class="absolute right-0 top-0 h-full w-72 max-w-[85vw] bg-white shadow-2xl border-l border-gray-200"
+	       style="padding-top: calc(env(safe-area-inset-top, 0px) + 1rem); padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);">
+		<div class="px-5 pb-6 flex items-center justify-between">
+			<div class="text-base font-semibold text-gray-700">Menu</div>
+			<button id="mobile-close" class="rounded-full p-2 hover:bg-gray-100" aria-label="Close menu">✕</button>
+		</div>
+		<nav class="px-5">
+			<ul class="flex flex-col gap-4 text-gray-800 text-lg">
+				<li><a href="/" class="hover:underline">Home</a></li>
+				<li><a href="#projects" class="hover:underline">Projects</a></li>
+				<li><a href="/about" class="hover:underline">About</a></li>
+				<li><a href="/contact" class="hover:underline">Contact</a></li>
+				<li><a href="/blog/posts" class="hover:underline">Blog</a></li>
+			</ul>
+		</nav>
+	</aside>
+</div>
 <main class="flex-1 flex flex-col items-center justify-start pt-10 sm:pt-20 pb-16 px-4">
 	<slot />
 </main>
 
+<script is:inline>
+// Mobile menu toggling with basic accessibility handling
+const burger = document.getElementById('burger');
+const mobileMenu = document.getElementById('mobile-menu');
+const mobileClose = document.getElementById('mobile-close');
+const mobileOverlay = document.getElementById('mobile-overlay');
+
+function openMenu() {
+	if (!mobileMenu) return;
+	mobileMenu.classList.remove('hidden');
+	burger && burger.setAttribute('aria-expanded', 'true');
+	document.body.style.overflow = 'hidden';
+}
+function closeMenu() {
+	if (!mobileMenu) return;
+	mobileMenu.classList.add('hidden');
+	burger && burger.setAttribute('aria-expanded', 'false');
+	document.body.style.overflow = '';
+}
+burger && burger.addEventListener('click', (e) => { e.preventDefault(); openMenu(); });
+mobileClose && mobileClose.addEventListener('click', (e) => { e.preventDefault(); closeMenu(); });
+mobileOverlay && mobileOverlay.addEventListener('click', closeMenu);
+// Close on Escape
+window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+</script>
 </body>
 </html>

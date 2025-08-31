@@ -141,14 +141,14 @@ export default function BlogCard({
                     aria-hidden
                 />
                 {dateStr && (
-                    <div className="absolute top-4 right-4 z-20">
+                    <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20">
             <span className="text-xs px-2 py-1 rounded-full border bg-gray-100 border-gray-200">
               {dateStr}
             </span>
                     </div>
                 )}
 
-                <h2 className="relative z-20 text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">
+                <h2 className={`relative z-20 text-2xl sm:text-3xl font-extrabold tracking-tight mb-2 ${dateStr ? 'mt-7 sm:mt-0' : ''}`}>
                     {title}
                 </h2>
 
@@ -218,8 +218,11 @@ export default function BlogCard({
 
                                     {/* Close button on the moving card */}
                                     <button
-                                        className="absolute top-4 right-4 rounded-full bg-gray-200 hover:bg-gray-300 p-2"
-                                        onClick={() => setIsOpen(false)}
+                                        type="button"
+                                        className="absolute z-30 top-4 right-4 rounded-full bg-gray-200 hover:bg-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                                        onPointerDown={(e) => { e.stopPropagation(); }}
+                                        onClick={(e) => { e.stopPropagation(); setIsOpen(false); }}
+                                        aria-label="Close"
                                     >
                                         ✕
                                     </button>

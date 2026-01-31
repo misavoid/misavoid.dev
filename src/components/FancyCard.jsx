@@ -5,7 +5,7 @@ export default function FancyCard({ title, children, github, website, variant = 
     // ...styles as before
     const isGradient = variant === "gradient";
     const base =
-        "relative rounded-2xl border p-6 sm:p-8 transition-all duration-200 flex flex-col gap-2 w-full h-full cursor-pointer transform-gpu";
+        "relative rounded-2xl border p-6 sm:p-8 transition-all duration-200 flex flex-col gap-2 w-full h-full transform-gpu";
     const neutral =
         "bg-white/90 border-gray-200 shadow-lg text-gray-900 hover:-translate-y-1";
     const gradient =
@@ -74,7 +74,8 @@ export default function FancyCard({ title, children, github, website, variant = 
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="View on GitHub"
-                    className={`absolute z-10 top-4 right-4 p-2 rounded-full bg-[#FFD600] hover:bg-yellow-400 shadow-lg border-2 border-white/60 transition`}
+                    onClick={(e) => e.stopPropagation()}
+                    className={`absolute z-10 top-4 right-4 p-2 rounded-full bg-[#FFD600] hover:bg-yellow-400 shadow-lg border-2 border-white/60 transition cursor-pointer`}
                 >
                     <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
                         <path
@@ -90,7 +91,8 @@ export default function FancyCard({ title, children, github, website, variant = 
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Visit website"
-                    className={`absolute z-10 top-4 right-4 p-2 rounded-full bg-[#FFD600] hover:bg-yellow-400 shadow-lg border-2 border-white/60 transition`}
+                    onClick={(e) => e.stopPropagation()}
+                    className={`absolute z-10 top-4 right-4 p-2 rounded-full bg-[#FFD600] hover:bg-yellow-400 shadow-lg border-2 border-white/60 transition cursor-pointer`}
                 >
                     <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
